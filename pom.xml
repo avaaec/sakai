@@ -246,3 +246,7 @@
         </profile>
     </profiles>
 </project>
+<properties>
+  <sonar.organization>avaaec</sonar.organization>
+  <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+</properties>
