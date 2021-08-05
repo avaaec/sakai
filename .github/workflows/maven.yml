@@ -30,6 +30,12 @@ jobs:
         with:
           java-version: 8
           architecture: x64
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
       - name: Cache local Maven repository
         uses: actions/cache@v2
         with:
@@ -45,3 +51,8 @@ jobs:
         uses: shyim/junit-report-annotations-action@0.2.0
         with:
           path: '**/surefire-reports/*.xml'
+      - name: Build and analyze
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=avaaec_sakai
